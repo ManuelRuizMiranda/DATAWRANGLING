@@ -1,5 +1,5 @@
 library(tidyverse)
-library(relimp)
+
 airquality %>% View()
 
 ##pivot_longer()/Formato largo
@@ -30,16 +30,46 @@ view(msleep$name)
 view(msleep)
 
 ##Filtrar Columnas por variables
-##primates
+
 msleep %>% filter(order=="Primates")
 msleep %>% filter(order=="Primates") %>% group_by(genus=="Macaca") 
 msleep %>% filter(order=="Perissodactyla",sleep_total>=2.5)
 msleep %>% filter(name=="horse",sleep_total<=2.5)
 
-##Funcion select()
+##Function select()
 msleep %>% filter(order=="Primates") %>% 
   select(name,sleep_cycle,bodywt,sleep_total)%>% 
   arrange(sleep_total)
 
+##Reordenar variables no numericas
 
+msleep %>% filter(order=="Primates") %>% 
+  select(name,sleep_cycle,bodywt,sleep_total)%>% 
+  arrange(name)
+
+##Mutate()
+##Agregar una nueva columna con Mutate()
+
+msleep = mutate(msleep,nuevo= sleep_rem*5)
+msleep %>% mutate(nuevo= sleep_rem*5)
+
+##Funciones de resumen de datos
+#dplyr
+
+glimpse(msleep)
+str(msleep)
+summary(msleep)
+summarize(msleep)
+
+##contar elementos de variables
+
+msleep %>% group_by(order) %>% 
+  select(order) %>% 
+  summarize(N=n())
+
+msleep %>% count(genus)
+
+##obtener duplicados
+
+msleep %>% get_dupes(genus,order) %>% view()
 
